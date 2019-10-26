@@ -322,4 +322,47 @@ void FormulinhaClass::calibrateLineSensors(bool automatic)
   led(0, 0, 0);
 }
 
+void FormulinhaClass::followLine(unsigned short weightA, unsigned short weightB)
+{
+  updateLineSensors();
+
+  if (lineSensor[2] > lineSensorMed[2])
+  {
+    forward(100, 100);
+  }
+  else
+  {
+    speedRight = (lineSensor[0] * weightB + lineSensor[1] * weightA) / (weightA + weightB);
+    speedLeft = (lineSensor[4] * weightB + lineSensor[3] * weightA) / (weightA + weightB);
+
+    unsigned short leftPercentage = map(speedLeft * 3 / 2, lineSensorMin[0], lineSensorMax[0], 0, 100);
+    unsigned short rightPercentage = map(speedRight * 3 / 2, lineSensorMin[4], lineSensorMax[4], 0, 100);
+
+    Serial.print(Formulinha.lineSensor[0]);
+    Serial.print("\t");
+    Serial.print(Formulinha.lineSensor[1]);
+    Serial.print("\t");
+    Serial.print(Formulinha.lineSensor[2]);
+    Serial.print("\t");
+    Serial.print(Formulinha.lineSensor[3]);
+    Serial.print("\t");
+    Serial.print(Formulinha.lineSensor[4]);
+    Serial.print("\t");
+
+    Serial.print(leftPercentage);
+    Serial.print(" Speed Left\t");
+    Serial.print(rightPercentage);
+    Serial.print(" Speed Right\n");
+
+    if (leftPercentage < 20 && rightPercentage < 20)
+    {
+      forward(0, 0); //se só encontrar branco ele para
+    }
+    else
+    {
+      forward(leftPercentage, rightPercentage);
+    }
+  }
+}
+
 FormulinhaClass Formulinha;

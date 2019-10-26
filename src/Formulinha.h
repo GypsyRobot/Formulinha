@@ -49,6 +49,9 @@ public:
   unsigned short lineSensorMed[5] = {500, 500, 500, 500, 500};
   unsigned short lineSensorSamples[5][SAMPLES_PER_SENSOR];
 
+  unsigned short speedLeft = 0;
+  unsigned short speedRight = 0;
+
   void init();
   void useServo();
   void removeServo();
@@ -68,6 +71,8 @@ public:
   void servo(unsigned short);
 
   void calibrateLineSensors(bool);
+
+  void followLine(unsigned short, unsigned short);
 
 private:
 };
