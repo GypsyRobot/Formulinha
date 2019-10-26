@@ -3,6 +3,7 @@
 void setup()
 {
   Formulinha.init();
+  Formulinha.useServo();
 }
 void loop()
 {
@@ -24,6 +25,8 @@ void loop()
   // delay(1000);
   unsigned int luz = Formulinha.light();
   double distancia = Formulinha.distance();
+  bool botaoA = Formulinha.buttonA();
+  bool botaoB = Formulinha.buttonB();
 
   Formulinha.updateLineSensors();
   Serial.print(Formulinha.lineSensor[0]);
@@ -39,9 +42,18 @@ void loop()
   Serial.print(luz);
   Serial.print("\t");
   Serial.print(distancia);
-  Serial.print(" cm\n");
+  Serial.print(" cm\t");
+  Serial.print(botaoA);
+  Serial.print("\t");
+  Serial.print(botaoB);
+  Serial.print("\n");
 
   Formulinha.led(100, 0, 100);
+
+  Formulinha.servo(180);
+  delay(3000);
+  Formulinha.servo(0);
+  delay(3000);
 
   // Formulinha.right(100,100);
 }

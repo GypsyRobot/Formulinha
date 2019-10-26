@@ -39,7 +39,7 @@
 class FormulinhaClass
 {
 public:
-  Servo servo;
+  Servo myServo;
   unsigned short lineSensor[5];
 
   void init();
@@ -54,6 +54,11 @@ public:
   unsigned int light();
   float distance();
   void led(unsigned short, unsigned short, unsigned short);
+
+  bool buttonA();
+  bool buttonB();
+
+  void servo(unsigned short);
 
 private:
 };

@@ -35,11 +35,11 @@ void FormulinhaClass::init()
 }
 void FormulinhaClass::useServo()
 {
-  servo.attach(PIN_SERVO);
+  myServo.attach(PIN_SERVO);
 }
 void FormulinhaClass::removeServo()
 {
-  servo.detach();
+  myServo.detach();
 }
 
 void FormulinhaClass::sound(unsigned short soundIndex)
@@ -188,6 +188,41 @@ void FormulinhaClass::led(unsigned short redPercentage, unsigned short greenPerc
   analogWrite(PIN_RED, redPwm);
   analogWrite(PIN_GREEN, greenPwm);
   analogWrite(PIN_BLUE, bluePwm);
+}
+
+bool FormulinhaClass::buttonA()
+{
+  bool buttonAStatus = digitalRead(PIN_BUT_A);
+  if (buttonAStatus == 0)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+bool FormulinhaClass::buttonB()
+{
+  bool buttonBStatus = digitalRead(PIN_BUT_B);
+  if (buttonBStatus == 0)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+void FormulinhaClass::servo(unsigned short angle)
+{
+  if (angle > 180)
+    angle = 180;
+  if (angle < 0)
+    angle = 0;
+  myServo.write(angle);
+  delay(30); //30ms pra garantir que não estrague o servo por excesso de movimentos
 }
 
 FormulinhaClass Formulinha;
