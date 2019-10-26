@@ -53,6 +53,7 @@ public:
   void right(unsigned short, unsigned short);
   unsigned int light();
   float distance();
+  void led(unsigned short, unsigned short, unsigned short);
 
 private:
 };

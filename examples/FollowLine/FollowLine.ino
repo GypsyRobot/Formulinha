@@ -37,9 +37,11 @@ void loop()
   Serial.print(Formulinha.lineSensor[4]);
   Serial.print("\t");
   Serial.print(luz);
-  Serial.print("\n");
+  Serial.print("\t");
   Serial.print(distancia);
   Serial.print(" cm\n");
+
+  Formulinha.led(100, 0, 100);
 
   // Formulinha.right(100,100);
 }

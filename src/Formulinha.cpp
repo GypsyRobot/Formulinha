@@ -155,7 +155,7 @@ float FormulinhaClass::distance()
   digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
 
   unsigned long durationMicroSeconds = pulseIn(PIN_ULTRASONIC_ECHO, HIGH);
-  float distanceCm = durationMicroSeconds / 0.0343 * 2;
+  float distanceCm = durationMicroSeconds / 2.0 * 0.0343;
   if (distanceCm > 400 || distanceCm <= 0)
   {
     return -1.0;
@@ -164,6 +164,30 @@ float FormulinhaClass::distance()
   {
     return distanceCm;
   }
+}
+
+void FormulinhaClass::led(unsigned short redPercentage, unsigned short greenPercentage, unsigned short bluePercentage)
+{
+  if (redPercentage < 0)
+    redPercentage = 0;
+  if (redPercentage > 100)
+    redPercentage = 100;
+  if (greenPercentage < 0)
+    greenPercentage = 0;
+  if (greenPercentage > 100)
+    greenPercentage = 100;
+  if (bluePercentage < 0)
+    bluePercentage = 0;
+  if (bluePercentage > 100)
+    bluePercentage = 100;
+
+  unsigned short redPwm = map(redPercentage, 0, 100, 0, 255);
+  unsigned short greenPwm = map(greenPercentage, 0, 100, 0, 255);
+  unsigned short bluePwm = map(bluePercentage, 0, 100, 0, 255);
+
+  analogWrite(PIN_RED, redPwm);
+  analogWrite(PIN_GREEN, greenPwm);
+  analogWrite(PIN_BLUE, bluePwm);
 }
 
 FormulinhaClass Formulinha;
