@@ -3,7 +3,7 @@
 void setup()
 {
   Formulinha.init();
-  Formulinha.useServo();
+  //Formulinha.useServo();
 }
 void loop()
 {
@@ -50,10 +50,10 @@ void loop()
 
   Formulinha.led(100, 0, 100);
 
-  Formulinha.servo(180);
-  delay(3000);
-  Formulinha.servo(0);
-  delay(3000);
+  // Formulinha.servo(180);
+  // delay(3000);
+  // Formulinha.servo(0);
+  // delay(3000);
 
   // Formulinha.right(100,100);
 }

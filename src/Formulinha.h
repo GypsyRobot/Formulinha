@@ -36,11 +36,17 @@
 #define PIN_ULTRASONIC_ECHO 3
 #define PIN_ULTRASONIC_TRIGGER 2
 
+#define SAMPLES_PER_SENSOR 20
+
 class FormulinhaClass
 {
 public:
   Servo myServo;
   unsigned short lineSensor[5];
+  unsigned short lineSensorMin[5];
+  unsigned short lineSensorMax[5];
+  unsigned short lineSensorMed[5];
+  unsigned short lineSensorSamples[5][SAMPLES_PER_SENSOR];
 
   void init();
   void useServo();
