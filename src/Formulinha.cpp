@@ -32,6 +32,8 @@ void FormulinhaClass::init()
 
   Serial.begin(115200);
   cute.init(PIN_BUZZER);
+
+  delay(1000); //espera um segundo quando inicia tudo para estabilizar
 }
 void FormulinhaClass::useServo()
 {
@@ -225,6 +227,99 @@ void FormulinhaClass::servo(unsigned short angle)
     angle = 0;
   myServo.write(angle);
   delay(30); //30ms pra garantir que não estrague o servo por excesso de movimentos
+}
+
+void FormulinhaClass::calibrateLineSensors(bool automatic)
+{
+  bool sideTurning = 0;
+  unsigned short sideTurningCounter = 0;
+
+  sound(S_CONNECTION);
+  led(100, 0, 100);
+
+  if (automatic == true)
+  {
+
+    left(100, 100);
+    delay(CALIBRATE_READING_DELAY);
+  }
+
+  for (int i = 0; i < SAMPLES_PER_SENSOR; i++)
+  {
+    if (automatic == true)
+    {
+      sideTurningCounter++;
+      if (sideTurningCounter >= 5)
+      {
+        sideTurningCounter = 0;
+        if (sideTurning == 0)
+          sideTurning = 1;
+        else
+          sideTurning = 0;
+      }
+
+      if (sideTurning == 0)
+      {
+        right(100, 100);
+      }
+      else
+      {
+        left(100, 100);
+      }
+    }
+
+    updateLineSensors();
+    if (lineSensor[0] < lineSensorMin[0])
+      lineSensorMin[0] = lineSensor[0];
+    if (lineSensor[0] > lineSensorMax[0])
+      lineSensorMax[0] = lineSensor[0];
+    if (lineSensor[1] < lineSensorMin[1])
+      lineSensorMin[1] = lineSensor[1];
+    if (lineSensor[1] > lineSensorMax[1])
+      lineSensorMax[1] = lineSensor[1];
+    if (lineSensor[2] < lineSensorMin[2])
+      lineSensorMin[2] = lineSensor[2];
+    if (lineSensor[2] > lineSensorMax[2])
+      lineSensorMax[2] = lineSensor[2];
+    if (lineSensor[3] < lineSensorMin[3])
+      lineSensorMin[3] = lineSensor[3];
+    if (lineSensor[3] > lineSensorMax[3])
+      lineSensorMax[3] = lineSensor[3];
+    if (lineSensor[4] < lineSensorMin[4])
+      lineSensorMin[4] = lineSensor[4];
+    if (lineSensor[4] > lineSensorMax[4])
+      lineSensorMax[4] = lineSensor[4];
+
+    lineSensorMed[0] = lineSensorMin[0] + ((lineSensorMax[0] - lineSensorMin[0]) / 2);
+    lineSensorMed[1] = lineSensorMin[1] + ((lineSensorMax[1] - lineSensorMin[1]) / 2);
+    lineSensorMed[2] = lineSensorMin[2] + ((lineSensorMax[2] - lineSensorMin[2]) / 2);
+    lineSensorMed[3] = lineSensorMin[3] + ((lineSensorMax[3] - lineSensorMin[3]) / 2);
+    lineSensorMed[4] = lineSensorMin[4] + ((lineSensorMax[4] - lineSensorMin[4]) / 2);
+
+    lineSensorSamples[0][i] = lineSensorMed[0];
+    lineSensorSamples[1][i] = lineSensorMed[1];
+    lineSensorSamples[2][i] = lineSensorMed[2];
+    lineSensorSamples[3][i] = lineSensorMed[3];
+    lineSensorSamples[4][i] = lineSensorMed[4];
+
+    Serial.print(lineSensorSamples[0][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[1][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[2][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[3][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[4][i]);
+    Serial.print("\n");
+
+    delay(CALIBRATE_READING_DELAY);
+  }
+
+  forward(0, 0);
+
+  sound(S_HAPPY);
+  led(0, 0, 0);
 }
 
 FormulinhaClass Formulinha;

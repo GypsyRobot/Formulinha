@@ -36,7 +36,8 @@
 #define PIN_ULTRASONIC_ECHO 3
 #define PIN_ULTRASONIC_TRIGGER 2
 
-#define SAMPLES_PER_SENSOR 20
+#define SAMPLES_PER_SENSOR 100
+#define CALIBRATE_READING_DELAY 120
 
 class FormulinhaClass
 {
@@ -45,7 +46,7 @@ public:
   unsigned short lineSensor[5];
   unsigned short lineSensorMin[5];
   unsigned short lineSensorMax[5];
-  unsigned short lineSensorMed[5];
+  unsigned short lineSensorMed[5] = {500, 500, 500, 500, 500};
   unsigned short lineSensorSamples[5][SAMPLES_PER_SENSOR];
 
   void init();
@@ -65,6 +66,8 @@ public:
   bool buttonB();
 
   void servo(unsigned short);
+
+  void calibrateLineSensors(bool);
 
 private:
 };
