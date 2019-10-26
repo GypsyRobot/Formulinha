@@ -1,8 +1,6 @@
 #include "Arduino.h"
 #include "Formulinha.h"
 
-Servo servo;
-
 void FormulinhaClass::init()
 {
   pinMode(PIN_BUT_A, INPUT);
@@ -44,9 +42,102 @@ void FormulinhaClass::removeServo()
   servo.detach();
 }
 
-void FormulinhaClass::playSound(unsigned short soundIndex)
+void FormulinhaClass::sound(unsigned short soundIndex)
 {
   cute.play(soundIndex);
+}
+
+void FormulinhaClass::readLineSensors()
+{
+  lineSensor[0] = analogRead(PIN_LINE_0);
+  lineSensor[1] = analogRead(PIN_LINE_1);
+  lineSensor[2] = analogRead(PIN_LINE_2);
+  lineSensor[3] = analogRead(PIN_LINE_3);
+  lineSensor[4] = analogRead(PIN_LINE_4);
+}
+
+void FormulinhaClass::forward(unsigned short leftPercentage, unsigned short rightPercentage)
+{
+
+  if (rightPercentage < 0)
+    rightPercentage = 0;
+  if (rightPercentage > 100)
+    rightPercentage = 100;
+  if (leftPercentage < 0)
+    leftPercentage = 0;
+  if (leftPercentage > 100)
+    leftPercentage = 100;
+
+  unsigned short rightPwm = map(rightPercentage, 0, 100, 0, 255);
+  unsigned short leftPwm = map(leftPercentage, 0, 100, 0, 255);
+
+  analogWrite(PIN_MOTOR_A1, 0);
+  analogWrite(PIN_MOTOR_A2, rightPwm);
+  analogWrite(PIN_MOTOR_B1, 0);
+  analogWrite(PIN_MOTOR_B2, leftPwm);
+}
+
+void FormulinhaClass::backward(unsigned short leftPercentage, unsigned short rightPercentage)
+{
+
+  if (rightPercentage < 0)
+    rightPercentage = 0;
+  if (rightPercentage > 100)
+    rightPercentage = 100;
+  if (leftPercentage < 0)
+    leftPercentage = 0;
+  if (leftPercentage > 100)
+    leftPercentage = 100;
+
+  unsigned short rightPwm = map(rightPercentage, 0, 100, 0, 255);
+  unsigned short leftPwm = map(leftPercentage, 0, 100, 0, 255);
+
+  analogWrite(PIN_MOTOR_A1, rightPwm);
+  analogWrite(PIN_MOTOR_A2, 0);
+  analogWrite(PIN_MOTOR_B1, leftPwm);
+  analogWrite(PIN_MOTOR_B2, 0);
+}
+
+void FormulinhaClass::left(unsigned short leftPercentage, unsigned short rightPercentage)
+{
+
+  if (rightPercentage < 0)
+    rightPercentage = 0;
+  if (rightPercentage > 100)
+    rightPercentage = 100;
+  if (leftPercentage < 0)
+    leftPercentage = 0;
+  if (leftPercentage > 100)
+    leftPercentage = 100;
+
+  unsigned short rightPwm = map(rightPercentage, 0, 100, 0, 255);
+  unsigned short leftPwm = map(leftPercentage, 0, 100, 0, 255);
+
+  analogWrite(PIN_MOTOR_A1, 0);
+  analogWrite(PIN_MOTOR_A2, rightPwm);
+  analogWrite(PIN_MOTOR_B1, leftPwm);
+  analogWrite(PIN_MOTOR_B2, 0);
+}
+
+void FormulinhaClass::right(unsigned short leftPercentage, unsigned short rightPercentage)
+{
+
+  if (rightPercentage < 0)
+    rightPercentage = 0;
+  if (rightPercentage > 100)
+    rightPercentage = 100;
+  if (leftPercentage < 0)
+    leftPercentage = 0;
+  if (leftPercentage > 100)
+    leftPercentage = 100;
+
+  unsigned short rightPwm = map(rightPercentage, 0, 100, 0, 255);
+  unsigned short leftPwm = map(leftPercentage, 0, 100, 0, 255);
+
+  analogWrite(PIN_MOTOR_A1, rightPwm);
+  analogWrite(PIN_MOTOR_A2, 0);
+  analogWrite(PIN_MOTOR_B1, 0);
+  analogWrite(PIN_MOTOR_B2, leftPwm);
 }
 
 FormulinhaClass Formulinha;

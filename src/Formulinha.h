@@ -12,11 +12,11 @@
 #define PIN_BUT_A 8
 #define PIN_BUT_B 7
 
-#define PIN_LINE_0 A0
-#define PIN_LINE_1 A1
+#define PIN_LINE_0 A4
+#define PIN_LINE_1 A3
 #define PIN_LINE_2 A2
-#define PIN_LINE_3 A3
-#define PIN_LINE_4 A4
+#define PIN_LINE_3 A1
+#define PIN_LINE_4 A0
 
 #define PIN_LDR A5
 
@@ -39,10 +39,18 @@
 class FormulinhaClass
 {
 public:
+  Servo servo;
+  unsigned short lineSensor[5];
+
   void init();
   void useServo();
   void removeServo();
-  void playSound(unsigned short);
+  void sound(unsigned short);
+  void readLineSensors();
+  void forward(unsigned short, unsigned short);
+  void backward(unsigned short, unsigned short);
+  void left(unsigned short, unsigned short);
+  void right(unsigned short, unsigned short);
 
 private:
 };
