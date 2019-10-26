@@ -195,6 +195,7 @@ bool FormulinhaClass::buttonA()
   bool buttonAStatus = digitalRead(PIN_BUT_A);
   if (buttonAStatus == 0)
   {
+    delay(30); //30ms pra garantir um debounce
     return true;
   }
   else
@@ -207,6 +208,7 @@ bool FormulinhaClass::buttonB()
   bool buttonBStatus = digitalRead(PIN_BUT_B);
   if (buttonBStatus == 0)
   {
+    delay(30); //30ms pra garantir um debounce
     return true;
   }
   else
