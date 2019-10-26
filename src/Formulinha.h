@@ -46,11 +46,13 @@ public:
   void useServo();
   void removeServo();
   void sound(unsigned short);
-  void readLineSensors();
+  void updateLineSensors();
   void forward(unsigned short, unsigned short);
   void backward(unsigned short, unsigned short);
   void left(unsigned short, unsigned short);
   void right(unsigned short, unsigned short);
+  unsigned int light();
+  float distance();
 
 private:
 };

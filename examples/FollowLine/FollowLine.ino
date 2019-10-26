@@ -22,8 +22,10 @@ void loop()
   // delay(1000);
   // //Formulinha.sound(S_HAPPY);
   // delay(1000);
+  unsigned int luz = Formulinha.light();
+  double distancia = Formulinha.distance();
 
-  Formulinha.readLineSensors();
+  Formulinha.updateLineSensors();
   Serial.print(Formulinha.lineSensor[0]);
   Serial.print("\t");
   Serial.print(Formulinha.lineSensor[1]);
@@ -33,7 +35,11 @@ void loop()
   Serial.print(Formulinha.lineSensor[3]);
   Serial.print("\t");
   Serial.print(Formulinha.lineSensor[4]);
+  Serial.print("\t");
+  Serial.print(luz);
   Serial.print("\n");
+  Serial.print(distancia);
+  Serial.print(" cm\n");
 
- // Formulinha.right(100,100);
+  // Formulinha.right(100,100);
 }

@@ -27,7 +27,7 @@ void FormulinhaClass::init()
 
   pinMode(PIN_SERVO, OUTPUT);
 
-  pinMode(PIN_ULTRASONIC_ECHO, OUTPUT);
+  pinMode(PIN_ULTRASONIC_ECHO, INPUT);
   pinMode(PIN_ULTRASONIC_TRIGGER, OUTPUT);
 
   Serial.begin(115200);
@@ -47,7 +47,7 @@ void FormulinhaClass::sound(unsigned short soundIndex)
   cute.play(soundIndex);
 }
 
-void FormulinhaClass::readLineSensors()
+void FormulinhaClass::updateLineSensors()
 {
   lineSensor[0] = analogRead(PIN_LINE_0);
   lineSensor[1] = analogRead(PIN_LINE_1);
@@ -138,6 +138,32 @@ void FormulinhaClass::right(unsigned short leftPercentage, unsigned short rightP
   analogWrite(PIN_MOTOR_A2, 0);
   analogWrite(PIN_MOTOR_B1, 0);
   analogWrite(PIN_MOTOR_B2, leftPwm);
+}
+
+unsigned int FormulinhaClass::light()
+{
+  unsigned int currentLight = analogRead(PIN_LDR);
+  return currentLight;
+}
+
+float FormulinhaClass::distance()
+{
+  digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PIN_ULTRASONIC_TRIGGER, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
+
+  unsigned long durationMicroSeconds = pulseIn(PIN_ULTRASONIC_ECHO, HIGH);
+  float distanceCm = durationMicroSeconds / 0.0343 * 2;
+  if (distanceCm > 400 || distanceCm <= 0)
+  {
+    return -1.0;
+  }
+  else
+  {
+    return distanceCm;
+  }
 }
 
 FormulinhaClass Formulinha;
