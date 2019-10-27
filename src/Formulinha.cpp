@@ -274,6 +274,11 @@ void FormulinhaClass::calibrateLineSensors(bool automatic)
   unsigned short sideTurningCounter = 0;
 
   sound(S_CONNECTION);
+  sound(S_CONNECTION);
+  sound(S_CONNECTION);
+  sound(S_CONNECTION);
+  sound(S_CONNECTION);
+
   led(100, 0, 100);
   delay(2000);
   genericFlag = true;
@@ -464,7 +469,7 @@ void FormulinhaClass::avoidLine()
 void FormulinhaClass::partyMode()
 {
 
-  if (light() < 400)
+  if (light() < 250)
   {
 
     genericFlag = false;
@@ -573,7 +578,9 @@ void FormulinhaClass::scrollModes()
 
   if (buttonA() == true)
   {
+    forward(0, 0); //para o robô quando troca de modo
     sound(S_HAPPY_SHORT);
+    delay(500); /*  */
     currentMode++;
     if (currentMode > 3)
     {
@@ -584,30 +591,26 @@ void FormulinhaClass::scrollModes()
   switch (currentMode)
   {
   case 0:
-    led(255, 0, 0);
-    delay(500);
-    partyMode();
-    break;
-  case 1:
-    led(0, 255, 0);
-    delay(500);
-    avoidLine();
-    genericFlag = false;
-    break;
-  case 2:
-    led(0, 0, 255);
-    delay(500);
-    followLine(1, 2);
-    genericFlag = false;
-    break;
-  case 3:
     led(255, 0, 255);
     delay(500);
     if (genericFlag == false)
     {
       calibrateLineSensors(false);
     }
-
+    break;
+  case 1:
+    led(255, 0, 0);
+    partyMode();
+    break;
+  case 2:
+    led(0, 255, 0);
+    avoidLine();
+    genericFlag = false;
+    break;
+  case 3:
+    led(0, 0, 255);
+    followLine(1, 2);
+    genericFlag = false;
     break;
   }
 }
