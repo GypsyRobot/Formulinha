@@ -395,7 +395,21 @@ void FormulinhaClass::followLine(unsigned short weightA, unsigned short weightB)
 
     if (leftPercentage < 20 && rightPercentage < 20)
     {
-      forward(0, 0); //se só encontrar branco ele para
+
+      if (leftPercentage > rightPercentage)
+      {
+        forward(leftPercentage * 10, rightPercentage);
+      }
+      else if (leftPercentage < rightPercentage)
+      {
+        forward(leftPercentage, rightPercentage * 10);
+      }
+      else
+      {
+        forward(leftPercentage * 15, rightPercentage * 5);
+      }
+
+      //forward(0, 0); //se só encontrar branco ele para
       if (lineLost == false)
       {
         sound(S_DISCONNECTION);
@@ -417,16 +431,30 @@ void FormulinhaClass::avoidLine()
   averageLineSensors();
   if (lineSensorMovingAverage[0] > lineSensorMed[0] || lineSensorMovingAverage[1] > lineSensorMed[1] || lineSensorMovingAverage[2] > lineSensorMed[2] || lineSensorMovingAverage[3] > lineSensorMed[3] || lineSensorMovingAverage[4] > lineSensorMed[4])
   {
-    led(100,0,0);
-    backward(100, 100);
-    sound(S_HAPPY);
-    delay(300);
-    right(100, 100);
-    delay(500);
+    if (avoidSide == false)
+    {
+      led(100, 0, 0);
+      backward(100, 100);
+      sound(S_HAPPY);
+      delay(300);
+      right(100, 100);
+      delay(400);
+      avoidSide = true;
+    }
+    else
+    {
+      led(100, 0, 0);
+      backward(100, 100);
+      sound(S_CONFUSED);
+      delay(200);
+      left(100, 100);
+      delay(800);
+      avoidSide = false;
+    }
   }
   else
   {
-    led(0,0,100);
+    led(0, 0, 100);
     forward(100, 100);
   }
 }

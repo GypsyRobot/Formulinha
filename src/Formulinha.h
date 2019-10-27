@@ -56,6 +56,7 @@ public:
   unsigned short speedRight = 0;
 
   bool lineLost = false;
+  bool avoidSide = false;
 
   void init();
   void useServo();
