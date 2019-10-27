@@ -4,13 +4,14 @@ void setup()
 {
   Formulinha.init();
   //Formulinha.useServo();
-  delay(2000); //delay pra dar tempo de por ele no chão
-  Formulinha.calibrateLineSensors(false);
+  //delay(2000); //delay pra dar tempo de por ele no chão
+  //Formulinha.calibrateLineSensors(false);
 }
 void loop()
 {
-  Formulinha.followLine(1, 2);
+  //Formulinha.followLine(1, 2);
   //Formulinha.avoidLine();
+  Formulinha.partyMode();
 
   // digitalWrite(PIN_GREEN, HIGH);
   // delay(1000);

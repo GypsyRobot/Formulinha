@@ -57,6 +57,7 @@ public:
 
   bool lineLost = false;
   bool avoidSide = false;
+  bool genericFlag = false;
 
   void init();
   void useServo();
@@ -81,6 +82,9 @@ public:
 
   void followLine(unsigned short, unsigned short);
   void avoidLine();
+
+  void partyMode();
+
 
 private:
 };

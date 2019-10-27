@@ -459,4 +459,111 @@ void FormulinhaClass::avoidLine()
   }
 }
 
+void FormulinhaClass::partyMode()
+{
+
+  if (light() < 400)
+  {
+
+    genericFlag = false;
+
+    right(100, 100);
+
+    led(255, 0, 0);
+    delay(30);
+    led(255, 255, 0);
+    delay(30);
+    led(255, 255, 255);
+    delay(30);
+    led(0, 255, 255);
+    delay(30);
+    led(0, 0, 255);
+    delay(30);
+    led(0, 0, 0);
+    delay(30);
+    led(0, 255, 0);
+    delay(30);
+    led(255, 0, 255);
+    delay(30);
+    led(0, 0, 255);
+    delay(30);
+    sound(S_HAPPY);
+
+    left(100, 100);
+
+    led(255, 0, 0);
+    delay(30);
+    led(255, 255, 0);
+    delay(30);
+    led(255, 255, 255);
+    delay(30);
+    led(0, 255, 255);
+    delay(30);
+    led(0, 0, 255);
+    delay(30);
+    led(0, 0, 0);
+    delay(30);
+    led(0, 255, 0);
+    delay(30);
+    led(255, 0, 255);
+    delay(30);
+    led(0, 0, 255);
+    delay(30);
+    sound(S_SURPRISE);
+
+    forward(100, 100);
+
+    led(255, 0, 0);
+    delay(30);
+    led(255, 255, 0);
+    delay(30);
+    led(255, 255, 255);
+    delay(30);
+    led(0, 255, 255);
+    delay(30);
+    led(0, 0, 255);
+    delay(30);
+    led(0, 0, 0);
+    delay(30);
+    led(0, 255, 0);
+    delay(30);
+    led(255, 0, 255);
+    delay(30);
+
+    sound(S_HAPPY_SHORT);
+
+    backward(100, 100);
+
+    led(255, 0, 0);
+    delay(30);
+    led(255, 255, 0);
+    delay(30);
+    led(255, 255, 255);
+    delay(30);
+    led(0, 255, 255);
+    delay(30);
+    led(0, 0, 255);
+    delay(30);
+    led(0, 0, 0);
+    delay(30);
+    led(0, 255, 0);
+    delay(30);
+    led(255, 0, 255);
+    delay(30);
+
+    sound(S_MODE2);
+  }
+  else
+  {
+    forward(0, 0);
+    led(0, 0, 0);
+    if (genericFlag == false)
+    {
+      delay(500);
+      sound(S_SAD);
+      genericFlag = true;
+    }
+  }
+}
+
 FormulinhaClass Formulinha;
