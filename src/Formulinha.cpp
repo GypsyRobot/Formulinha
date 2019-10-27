@@ -58,6 +58,45 @@ void FormulinhaClass::updateLineSensors()
   lineSensor[4] = analogRead(PIN_LINE_4);
 }
 
+void FormulinhaClass::averageLineSensors()
+{
+
+  for (unsigned short i = 0; i < SAMPLES_PER_AVERAGE; i++)
+  {
+    lineSensorMovingAverageSamples[0][i] = 500; //reseta as médias
+    lineSensorMovingAverageSamples[1][i] = 500;
+    lineSensorMovingAverageSamples[2][i] = 500;
+    lineSensorMovingAverageSamples[3][i] = 500;
+    lineSensorMovingAverageSamples[4][i] = 500;
+
+    lineSensorMovingAverage[0] = 0;
+    lineSensorMovingAverage[1] = 0;
+    lineSensorMovingAverage[2] = 0;
+    lineSensorMovingAverage[3] = 0;
+    lineSensorMovingAverage[4] = 0;
+  }
+
+  for (unsigned short i = 0; i < SAMPLES_PER_AVERAGE; i++)
+  {
+    lineSensorMovingAverageSamples[0][i] = analogRead(PIN_LINE_0);
+    lineSensorMovingAverageSamples[1][i] = analogRead(PIN_LINE_1);
+    lineSensorMovingAverageSamples[2][i] = analogRead(PIN_LINE_2);
+    lineSensorMovingAverageSamples[3][i] = analogRead(PIN_LINE_3);
+    lineSensorMovingAverageSamples[4][i] = analogRead(PIN_LINE_4);
+
+    lineSensorMovingAverage[0] += lineSensorMovingAverageSamples[0][i];
+    lineSensorMovingAverage[1] += lineSensorMovingAverageSamples[1][i];
+    lineSensorMovingAverage[2] += lineSensorMovingAverageSamples[2][i];
+    lineSensorMovingAverage[3] += lineSensorMovingAverageSamples[3][i];
+    lineSensorMovingAverage[4] += lineSensorMovingAverageSamples[4][i];
+  }
+  lineSensorMovingAverage[0] = lineSensorMovingAverage[0] / SAMPLES_PER_AVERAGE;
+  lineSensorMovingAverage[1] = lineSensorMovingAverage[1] / SAMPLES_PER_AVERAGE;
+  lineSensorMovingAverage[2] = lineSensorMovingAverage[2] / SAMPLES_PER_AVERAGE;
+  lineSensorMovingAverage[3] = lineSensorMovingAverage[3] / SAMPLES_PER_AVERAGE;
+  lineSensorMovingAverage[4] = lineSensorMovingAverage[4] / SAMPLES_PER_AVERAGE;
+}
+
 void FormulinhaClass::forward(unsigned short leftPercentage, unsigned short rightPercentage)
 {
 
@@ -338,30 +377,57 @@ void FormulinhaClass::followLine(unsigned short weightA, unsigned short weightB)
     unsigned short leftPercentage = map(speedLeft * 3 / 2, lineSensorMin[0], lineSensorMax[0], 0, 100);
     unsigned short rightPercentage = map(speedRight * 3 / 2, lineSensorMin[4], lineSensorMax[4], 0, 100);
 
-    Serial.print(Formulinha.lineSensor[0]);
-    Serial.print("\t");
-    Serial.print(Formulinha.lineSensor[1]);
-    Serial.print("\t");
-    Serial.print(Formulinha.lineSensor[2]);
-    Serial.print("\t");
-    Serial.print(Formulinha.lineSensor[3]);
-    Serial.print("\t");
-    Serial.print(Formulinha.lineSensor[4]);
-    Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[0]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[1]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[2]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[3]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[4]);
+    // Serial.print("\t");
 
-    Serial.print(leftPercentage);
-    Serial.print(" Speed Left\t");
-    Serial.print(rightPercentage);
-    Serial.print(" Speed Right\n");
+    // Serial.print(leftPercentage);
+    // Serial.print(" Speed Left\t");
+    // Serial.print(rightPercentage);
+    // Serial.print(" Speed Right\n");
 
     if (leftPercentage < 20 && rightPercentage < 20)
     {
       forward(0, 0); //se só encontrar branco ele para
+      if (lineLost == false)
+      {
+        sound(S_DISCONNECTION);
+        led(255, 0, 0);
+        lineLost = true;
+      }
     }
     else
     {
       forward(leftPercentage, rightPercentage);
+      led(0, 0, 255);
+      lineLost = false;
     }
+  }
+}
+
+void FormulinhaClass::avoidLine()
+{
+  averageLineSensors();
+  if (lineSensorMovingAverage[0] > lineSensorMed[0] || lineSensorMovingAverage[1] > lineSensorMed[1] || lineSensorMovingAverage[2] > lineSensorMed[2] || lineSensorMovingAverage[3] > lineSensorMed[3] || lineSensorMovingAverage[4] > lineSensorMed[4])
+  {
+    led(100,0,0);
+    backward(100, 100);
+    sound(S_HAPPY);
+    delay(300);
+    right(100, 100);
+    delay(500);
+  }
+  else
+  {
+    led(0,0,100);
+    forward(100, 100);
   }
 }
 

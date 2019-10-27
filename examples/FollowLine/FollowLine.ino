@@ -8,7 +8,8 @@ void setup()
 }
 void loop()
 {
-  Formulinha.followLine(1, 2);
+  //Formulinha.followLine(1, 2);
+  Formulinha.avoidLine();
 
   // digitalWrite(PIN_GREEN, HIGH);
   // delay(1000);

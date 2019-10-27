@@ -37,6 +37,7 @@
 #define PIN_ULTRASONIC_TRIGGER 2
 
 #define SAMPLES_PER_SENSOR 100
+#define SAMPLES_PER_AVERAGE 10
 #define CALIBRATE_READING_DELAY 120
 
 class FormulinhaClass
@@ -48,15 +49,20 @@ public:
   unsigned short lineSensorMax[5];
   unsigned short lineSensorMed[5] = {500, 500, 500, 500, 500};
   unsigned short lineSensorSamples[5][SAMPLES_PER_SENSOR];
+  unsigned short lineSensorMovingAverage[5];
+  unsigned short lineSensorMovingAverageSamples[5][10];
 
   unsigned short speedLeft = 0;
   unsigned short speedRight = 0;
+
+  bool lineLost = false;
 
   void init();
   void useServo();
   void removeServo();
   void sound(unsigned short);
   void updateLineSensors();
+  void averageLineSensors();
   void forward(unsigned short, unsigned short);
   void backward(unsigned short, unsigned short);
   void left(unsigned short, unsigned short);
@@ -73,6 +79,7 @@ public:
   void calibrateLineSensors(bool);
 
   void followLine(unsigned short, unsigned short);
+  void avoidLine();
 
 private:
 };
