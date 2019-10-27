@@ -11,7 +11,7 @@ void loop()
 {
   //Formulinha.followLine(1, 2);
   //Formulinha.avoidLine();
-  Formulinha.partyMode();
+  Formulinha.scrollModes();
 
   // digitalWrite(PIN_GREEN, HIGH);
   // delay(1000);

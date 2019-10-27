@@ -275,6 +275,8 @@ void FormulinhaClass::calibrateLineSensors(bool automatic)
 
   sound(S_CONNECTION);
   led(100, 0, 100);
+  delay(2000);
+  genericFlag = true;
 
   if (automatic == true)
   {
@@ -563,6 +565,50 @@ void FormulinhaClass::partyMode()
       sound(S_SAD);
       genericFlag = true;
     }
+  }
+}
+
+void FormulinhaClass::scrollModes()
+{
+
+  if (buttonA() == true)
+  {
+    sound(S_HAPPY_SHORT);
+    currentMode++;
+    if (currentMode > 3)
+    {
+      currentMode = 0;
+    }
+  }
+
+  switch (currentMode)
+  {
+  case 0:
+    led(255, 0, 0);
+    delay(500);
+    partyMode();
+    break;
+  case 1:
+    led(0, 255, 0);
+    delay(500);
+    avoidLine();
+    genericFlag = false;
+    break;
+  case 2:
+    led(0, 0, 255);
+    delay(500);
+    followLine(1, 2);
+    genericFlag = false;
+    break;
+  case 3:
+    led(255, 0, 255);
+    delay(500);
+    if (genericFlag == false)
+    {
+      calibrateLineSensors(false);
+    }
+
+    break;
   }
 }
 

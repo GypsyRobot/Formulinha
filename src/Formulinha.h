@@ -55,6 +55,8 @@ public:
   unsigned short speedLeft = 0;
   unsigned short speedRight = 0;
 
+  unsigned short currentMode = 0;
+
   bool lineLost = false;
   bool avoidSide = false;
   bool genericFlag = false;
@@ -85,6 +87,7 @@ public:
 
   void partyMode();
 
+  void scrollModes();
 
 private:
 };
