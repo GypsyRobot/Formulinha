@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "Formulinha.h"
 
-void FormulinhaClass::init()
+void FormulinhaClass::Init()
 {
   pinMode(PIN_BUT_A, INPUT);
   pinMode(PIN_BUT_B, INPUT);
@@ -35,21 +35,21 @@ void FormulinhaClass::init()
 
   delay(1000); //espera um segundo quando inicia tudo para estabilizar
 }
-void FormulinhaClass::useServo()
+void FormulinhaClass::UseServo()
 {
   myServo.attach(PIN_SERVO);
 }
-void FormulinhaClass::removeServo()
+void FormulinhaClass::RemoveServo()
 {
   myServo.detach();
 }
 
-void FormulinhaClass::sound(unsigned short soundIndex)
+void FormulinhaClass::Sound(unsigned short soundIndex)
 {
   cute.play(soundIndex);
 }
 
-void FormulinhaClass::updateLineSensors()
+void FormulinhaClass::UpdateLineSensors()
 {
   lineSensor[0] = analogRead(PIN_LINE_0);
   lineSensor[1] = analogRead(PIN_LINE_1);
@@ -58,7 +58,7 @@ void FormulinhaClass::updateLineSensors()
   lineSensor[4] = analogRead(PIN_LINE_4);
 }
 
-void FormulinhaClass::averageLineSensors()
+void FormulinhaClass::AverageLineSensors()
 {
 
   for (unsigned short i = 0; i < SAMPLES_PER_AVERAGE; i++)
@@ -97,7 +97,7 @@ void FormulinhaClass::averageLineSensors()
   lineSensorMovingAverage[4] = lineSensorMovingAverage[4] / SAMPLES_PER_AVERAGE;
 }
 
-void FormulinhaClass::forward(unsigned short leftPercentage, unsigned short rightPercentage)
+void FormulinhaClass::Forward(unsigned short leftPercentage, unsigned short rightPercentage)
 {
 
   if (rightPercentage < 0)
@@ -118,7 +118,7 @@ void FormulinhaClass::forward(unsigned short leftPercentage, unsigned short righ
   analogWrite(PIN_MOTOR_B2, leftPwm);
 }
 
-void FormulinhaClass::backward(unsigned short leftPercentage, unsigned short rightPercentage)
+void FormulinhaClass::Backward(unsigned short leftPercentage, unsigned short rightPercentage)
 {
 
   if (rightPercentage < 0)
@@ -139,7 +139,7 @@ void FormulinhaClass::backward(unsigned short leftPercentage, unsigned short rig
   analogWrite(PIN_MOTOR_B2, 0);
 }
 
-void FormulinhaClass::left(unsigned short leftPercentage, unsigned short rightPercentage)
+void FormulinhaClass::Left(unsigned short leftPercentage, unsigned short rightPercentage)
 {
 
   if (rightPercentage < 0)
@@ -160,7 +160,7 @@ void FormulinhaClass::left(unsigned short leftPercentage, unsigned short rightPe
   analogWrite(PIN_MOTOR_B2, 0);
 }
 
-void FormulinhaClass::right(unsigned short leftPercentage, unsigned short rightPercentage)
+void FormulinhaClass::Right(unsigned short leftPercentage, unsigned short rightPercentage)
 {
 
   if (rightPercentage < 0)
@@ -181,13 +181,13 @@ void FormulinhaClass::right(unsigned short leftPercentage, unsigned short rightP
   analogWrite(PIN_MOTOR_B2, leftPwm);
 }
 
-unsigned int FormulinhaClass::light()
+unsigned int FormulinhaClass::Light()
 {
   unsigned int currentLight = analogRead(PIN_LDR);
   return currentLight;
 }
 
-float FormulinhaClass::distance()
+float FormulinhaClass::Distance()
 {
   digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
   delayMicroseconds(2);
@@ -207,7 +207,7 @@ float FormulinhaClass::distance()
   }
 }
 
-void FormulinhaClass::led(unsigned short redPercentage, unsigned short greenPercentage, unsigned short bluePercentage)
+void FormulinhaClass::Led(unsigned short redPercentage, unsigned short greenPercentage, unsigned short bluePercentage)
 {
   if (redPercentage < 0)
     redPercentage = 0;
@@ -231,7 +231,7 @@ void FormulinhaClass::led(unsigned short redPercentage, unsigned short greenPerc
   analogWrite(PIN_BLUE, bluePwm);
 }
 
-bool FormulinhaClass::buttonA()
+bool FormulinhaClass::ButtonA()
 {
   bool buttonAStatus = digitalRead(PIN_BUT_A);
   if (buttonAStatus == 0)
@@ -244,7 +244,7 @@ bool FormulinhaClass::buttonA()
     return false;
   }
 }
-bool FormulinhaClass::buttonB()
+bool FormulinhaClass::ButtonB()
 {
   bool buttonBStatus = digitalRead(PIN_BUT_B);
   if (buttonBStatus == 0)
@@ -258,7 +258,7 @@ bool FormulinhaClass::buttonB()
   }
 }
 
-void FormulinhaClass::servo(unsigned short angle)
+void FormulinhaClass::Servo(unsigned short angle)
 {
   if (angle > 180)
     angle = 180;
@@ -268,25 +268,25 @@ void FormulinhaClass::servo(unsigned short angle)
   delay(30); //30ms pra garantir que não estrague o servo por excesso de movimentos
 }
 
-void FormulinhaClass::calibrateLineSensors(bool automatic)
+void FormulinhaClass::CalibrateLineSensors(bool automatic)
 {
   bool sideTurning = 0;
   unsigned short sideTurningCounter = 0;
 
-  sound(S_CONNECTION);
-  sound(S_CONNECTION);
-  sound(S_CONNECTION);
-  sound(S_CONNECTION);
-  sound(S_CONNECTION);
+  Sound(S_CONNECTION);
+  Sound(S_CONNECTION);
+  Sound(S_CONNECTION);
+  Sound(S_CONNECTION);
+  Sound(S_CONNECTION);
 
-  led(100, 0, 100);
+  Led(100, 0, 100);
   delay(2000);
   genericFlag = true;
 
   if (automatic == true)
   {
 
-    left(100, 100);
+    Left(100, 100);
     delay(CALIBRATE_READING_DELAY);
   }
 
@@ -306,15 +306,15 @@ void FormulinhaClass::calibrateLineSensors(bool automatic)
 
       if (sideTurning == 0)
       {
-        right(100, 100);
+        Right(100, 100);
       }
       else
       {
-        left(100, 100);
+        Left(100, 100);
       }
     }
 
-    updateLineSensors();
+    UpdateLineSensors();
     if (lineSensor[0] < lineSensorMin[0])
       lineSensorMin[0] = lineSensor[0];
     if (lineSensor[0] > lineSensorMax[0])
@@ -362,19 +362,19 @@ void FormulinhaClass::calibrateLineSensors(bool automatic)
     delay(CALIBRATE_READING_DELAY);
   }
 
-  forward(0, 0);
+  Forward(0, 0);
 
-  sound(S_HAPPY);
-  led(0, 0, 0);
+  Sound(S_HAPPY);
+  Led(0, 0, 0);
 }
 
-void FormulinhaClass::followLine(unsigned short weightA, unsigned short weightB)
+void FormulinhaClass::FollowLine(unsigned short weightA, unsigned short weightB)
 {
-  updateLineSensors();
+  UpdateLineSensors();
 
   if (lineSensor[2] > lineSensorMed[2])
   {
-    forward(100, 100);
+    Forward(100, 100);
   }
   else
   {
@@ -405,181 +405,181 @@ void FormulinhaClass::followLine(unsigned short weightA, unsigned short weightB)
 
       if (leftPercentage > rightPercentage)
       {
-        forward(leftPercentage * 10, rightPercentage);
+        Forward(leftPercentage * 10, rightPercentage);
       }
       else if (leftPercentage < rightPercentage)
       {
-        forward(leftPercentage, rightPercentage * 10);
+        Forward(leftPercentage, rightPercentage * 10);
       }
       else
       {
-        forward(leftPercentage * 15, rightPercentage * 5);
+        Forward(leftPercentage * 15, rightPercentage * 5);
       }
 
       //forward(0, 0); //se só encontrar branco ele para
       if (lineLost == false)
       {
-        sound(S_DISCONNECTION);
-        led(255, 0, 0);
+        Sound(S_DISCONNECTION);
+        Led(255, 0, 0);
         lineLost = true;
       }
     }
     else
     {
-      forward(leftPercentage, rightPercentage);
-      led(0, 0, 255);
+      Forward(leftPercentage, rightPercentage);
+      Led(0, 0, 255);
       lineLost = false;
     }
   }
 }
 
-void FormulinhaClass::avoidLine()
+void FormulinhaClass::AvoidLine()
 {
-  averageLineSensors();
+  AverageLineSensors();
   if (lineSensorMovingAverage[0] > lineSensorMed[0] || lineSensorMovingAverage[1] > lineSensorMed[1] || lineSensorMovingAverage[2] > lineSensorMed[2] || lineSensorMovingAverage[3] > lineSensorMed[3] || lineSensorMovingAverage[4] > lineSensorMed[4])
   {
     if (avoidSide == false)
     {
-      led(100, 0, 0);
-      backward(100, 100);
-      sound(S_HAPPY);
+      Led(100, 0, 0);
+      Backward(100, 100);
+      Sound(S_HAPPY);
       delay(300);
-      right(100, 100);
+      Right(100, 100);
       delay(400);
       avoidSide = true;
     }
     else
     {
-      led(100, 0, 0);
-      backward(100, 100);
-      sound(S_CONFUSED);
+      Led(100, 0, 0);
+      Backward(100, 100);
+      Sound(S_CONFUSED);
       delay(200);
-      left(100, 100);
+      Left(100, 100);
       delay(800);
       avoidSide = false;
     }
   }
   else
   {
-    led(0, 0, 100);
-    forward(100, 100);
+    Led(0, 0, 100);
+    Forward(100, 100);
   }
 }
 
-void FormulinhaClass::partyMode()
+void FormulinhaClass::PartyMode()
 {
 
-  if (light() < 250)
+  if (Light() < 250)
   {
 
     genericFlag = false;
 
-    right(100, 100);
+    Right(100, 100);
 
-    led(255, 0, 0);
+    Led(255, 0, 0);
     delay(30);
-    led(255, 255, 0);
+    Led(255, 255, 0);
     delay(30);
-    led(255, 255, 255);
+    Led(255, 255, 255);
     delay(30);
-    led(0, 255, 255);
+    Led(0, 255, 255);
     delay(30);
-    led(0, 0, 255);
+    Led(0, 0, 255);
     delay(30);
-    led(0, 0, 0);
+    Led(0, 0, 0);
     delay(30);
-    led(0, 255, 0);
+    Led(0, 255, 0);
     delay(30);
-    led(255, 0, 255);
+    Led(255, 0, 255);
     delay(30);
-    led(0, 0, 255);
+    Led(0, 0, 255);
     delay(30);
-    sound(S_HAPPY);
+    Sound(S_HAPPY);
 
-    left(100, 100);
+    Left(100, 100);
 
-    led(255, 0, 0);
+    Led(255, 0, 0);
     delay(30);
-    led(255, 255, 0);
+    Led(255, 255, 0);
     delay(30);
-    led(255, 255, 255);
+    Led(255, 255, 255);
     delay(30);
-    led(0, 255, 255);
+    Led(0, 255, 255);
     delay(30);
-    led(0, 0, 255);
+    Led(0, 0, 255);
     delay(30);
-    led(0, 0, 0);
+    Led(0, 0, 0);
     delay(30);
-    led(0, 255, 0);
+    Led(0, 255, 0);
     delay(30);
-    led(255, 0, 255);
+    Led(255, 0, 255);
     delay(30);
-    led(0, 0, 255);
+    Led(0, 0, 255);
     delay(30);
-    sound(S_SURPRISE);
+    Sound(S_SURPRISE);
 
-    forward(100, 100);
+    Forward(100, 100);
 
-    led(255, 0, 0);
+    Led(255, 0, 0);
     delay(30);
-    led(255, 255, 0);
+    Led(255, 255, 0);
     delay(30);
-    led(255, 255, 255);
+    Led(255, 255, 255);
     delay(30);
-    led(0, 255, 255);
+    Led(0, 255, 255);
     delay(30);
-    led(0, 0, 255);
+    Led(0, 0, 255);
     delay(30);
-    led(0, 0, 0);
+    Led(0, 0, 0);
     delay(30);
-    led(0, 255, 0);
+    Led(0, 255, 0);
     delay(30);
-    led(255, 0, 255);
-    delay(30);
-
-    sound(S_HAPPY_SHORT);
-
-    backward(100, 100);
-
-    led(255, 0, 0);
-    delay(30);
-    led(255, 255, 0);
-    delay(30);
-    led(255, 255, 255);
-    delay(30);
-    led(0, 255, 255);
-    delay(30);
-    led(0, 0, 255);
-    delay(30);
-    led(0, 0, 0);
-    delay(30);
-    led(0, 255, 0);
-    delay(30);
-    led(255, 0, 255);
+    Led(255, 0, 255);
     delay(30);
 
-    sound(S_MODE2);
+    Sound(S_HAPPY_SHORT);
+
+    Backward(100, 100);
+
+    Led(255, 0, 0);
+    delay(30);
+    Led(255, 255, 0);
+    delay(30);
+    Led(255, 255, 255);
+    delay(30);
+    Led(0, 255, 255);
+    delay(30);
+    Led(0, 0, 255);
+    delay(30);
+    Led(0, 0, 0);
+    delay(30);
+    Led(0, 255, 0);
+    delay(30);
+    Led(255, 0, 255);
+    delay(30);
+
+    Sound(S_MODE2);
   }
   else
   {
-    forward(0, 0);
-    led(0, 0, 0);
+    Forward(0, 0);
+    Led(0, 0, 0);
     if (genericFlag == false)
     {
       delay(500);
-      sound(S_SAD);
+      Sound(S_SAD);
       genericFlag = true;
     }
   }
 }
 
-void FormulinhaClass::scrollModes()
+void FormulinhaClass::ScrollModes()
 {
 
-  if (buttonA() == true)
+  if (ButtonA() == true)
   {
-    forward(0, 0); //para o robô quando troca de modo
-    sound(S_HAPPY_SHORT);
+    Forward(0, 0); //para o robô quando troca de modo
+    Sound(S_HAPPY_SHORT);
     delay(500); /*  */
     currentMode++;
     if (currentMode > 3)
@@ -591,25 +591,25 @@ void FormulinhaClass::scrollModes()
   switch (currentMode)
   {
   case 0:
-    led(255, 0, 255);
+    Led(255, 0, 255);
     delay(500);
     if (genericFlag == false)
     {
-      calibrateLineSensors(false);
+      CalibrateLineSensors(false);
     }
     break;
   case 1:
-    led(255, 0, 0);
-    partyMode();
+    Led(255, 0, 0);
+    PartyMode();
     break;
   case 2:
-    led(0, 255, 0);
-    avoidLine();
+    Led(0, 255, 0);
+    AvoidLine();
     genericFlag = false;
     break;
   case 3:
-    led(0, 0, 255);
-    followLine(1, 2);
+    Led(0, 0, 255);
+    FollowLine(1, 2);
     genericFlag = false;
     break;
   }

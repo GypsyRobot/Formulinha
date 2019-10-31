@@ -61,33 +61,33 @@ public:
   bool avoidSide = false;
   bool genericFlag = false;
 
-  void init();
-  void useServo();
-  void removeServo();
-  void sound(unsigned short);
-  void updateLineSensors();
-  void averageLineSensors();
-  void forward(unsigned short, unsigned short);
-  void backward(unsigned short, unsigned short);
-  void left(unsigned short, unsigned short);
-  void right(unsigned short, unsigned short);
-  unsigned int light();
-  float distance();
-  void led(unsigned short, unsigned short, unsigned short);
+  void Init();
+  void UseServo();
+  void RemoveServo();
+  void Sound(unsigned short);
+  void UpdateLineSensors();
+  void AverageLineSensors();
+  void Forward(unsigned short, unsigned short);
+  void Backward(unsigned short, unsigned short);
+  void Left(unsigned short, unsigned short);
+  void Right(unsigned short, unsigned short);
+  unsigned int Light();
+  float Distance();
+  void Led(unsigned short, unsigned short, unsigned short);
 
-  bool buttonA();
-  bool buttonB();
+  bool ButtonA();
+  bool ButtonB();
 
-  void servo(unsigned short);
+  void Servo(unsigned short);
 
-  void calibrateLineSensors(bool);
+  void CalibrateLineSensors(bool);
 
-  void followLine(unsigned short, unsigned short);
-  void avoidLine();
+  void FollowLine(unsigned short, unsigned short);
+  void AvoidLine();
 
-  void partyMode();
+  void PartyMode();
 
-  void scrollModes();
+  void ScrollModes();
 
 private:
 };
