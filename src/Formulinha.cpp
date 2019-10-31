@@ -509,8 +509,8 @@ void FormulinhaClass::AvoidMovement(bool activate)
   }
   else
   {
-    //Led(0, 0, 100);
-    //Forward(100, 100);
+    Led(0, 0, 100);
+    Forward(100, 100);
   }
 }
 
