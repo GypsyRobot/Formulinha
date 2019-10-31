@@ -89,6 +89,11 @@ public:
 
   void ScrollModes();
 
+  void AvoidMovement(bool);
+  void AvoidObject();
+  void AttackObject(unsigned int);
+  void Sumo();
+
 private:
 };
 

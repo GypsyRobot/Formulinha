@@ -433,10 +433,9 @@ void FormulinhaClass::FollowLine(unsigned short weightA, unsigned short weightB)
   }
 }
 
-void FormulinhaClass::AvoidLine()
+void FormulinhaClass::AvoidMovement(bool activate)
 {
-  AverageLineSensors();
-  if (lineSensorMovingAverage[0] > lineSensorMed[0] || lineSensorMovingAverage[1] > lineSensorMed[1] || lineSensorMovingAverage[2] > lineSensorMed[2] || lineSensorMovingAverage[3] > lineSensorMed[3] || lineSensorMovingAverage[4] > lineSensorMed[4])
+  if (activate == true)
   {
     if (avoidSide == false)
     {
@@ -462,7 +461,20 @@ void FormulinhaClass::AvoidLine()
   else
   {
     Led(0, 0, 100);
-    Forward(100, 100);
+    //Forward(100, 100);
+  }
+}
+
+void FormulinhaClass::AvoidLine()
+{
+  AverageLineSensors();
+  if (lineSensorMovingAverage[0] > lineSensorMed[0] || lineSensorMovingAverage[1] > lineSensorMed[1] || lineSensorMovingAverage[2] > lineSensorMed[2] || lineSensorMovingAverage[3] > lineSensorMed[3] || lineSensorMovingAverage[4] > lineSensorMed[4])
+  {
+    AvoidMovement(true);
+  }
+  else
+  {
+    AvoidMovement(false);
   }
 }
 
@@ -475,29 +487,8 @@ void FormulinhaClass::PartyMode()
     genericFlag = false;
 
     Right(100, 100);
-
-    Led(255, 0, 0);
-    delay(30);
-    Led(255, 255, 0);
-    delay(30);
-    Led(255, 255, 255);
-    delay(30);
-    Led(0, 255, 255);
-    delay(30);
-    Led(0, 0, 255);
-    delay(30);
-    Led(0, 0, 0);
-    delay(30);
-    Led(0, 255, 0);
-    delay(30);
-    Led(255, 0, 255);
-    delay(30);
-    Led(0, 0, 255);
-    delay(30);
     Sound(S_HAPPY);
 
-    Left(100, 100);
-
     Led(255, 0, 0);
     delay(30);
     Led(255, 255, 0);
@@ -516,10 +507,6 @@ void FormulinhaClass::PartyMode()
     delay(30);
     Led(0, 0, 255);
     delay(30);
-    Sound(S_SURPRISE);
-
-    Forward(100, 100);
-
     Led(255, 0, 0);
     delay(30);
     Led(255, 255, 0);
@@ -536,11 +523,8 @@ void FormulinhaClass::PartyMode()
     delay(30);
     Led(255, 0, 255);
     delay(30);
-
-    Sound(S_HAPPY_SHORT);
-
-    Backward(100, 100);
-
+    Led(0, 0, 255);
+    delay(30);
     Led(255, 0, 0);
     delay(30);
     Led(255, 255, 0);
@@ -557,8 +541,22 @@ void FormulinhaClass::PartyMode()
     delay(30);
     Led(255, 0, 255);
     delay(30);
-
-    Sound(S_MODE2);
+    Led(255, 0, 0);
+    delay(30);
+    Led(255, 255, 0);
+    delay(30);
+    Led(255, 255, 255);
+    delay(30);
+    Led(0, 255, 255);
+    delay(30);
+    Led(0, 0, 255);
+    delay(30);
+    Led(0, 0, 0);
+    delay(30);
+    Led(0, 255, 0);
+    delay(30);
+    Led(255, 0, 255);
+    delay(30);
   }
   else
   {
@@ -613,6 +611,33 @@ void FormulinhaClass::ScrollModes()
     genericFlag = false;
     break;
   }
+}
+
+void FormulinhaClass::AvoidObject()
+{
+  if (Distance() < 10) //if there is an object closer than 10 cm
+  {
+    AvoidMovement(true);
+  }
+  else
+  {
+    AvoidMovement(false);
+  }
+}
+
+void FormulinhaClass::AttackObject(unsigned int distance)
+{
+  if (Distance() < distance)
+  {
+    Forward(100, 100);
+  }
+}
+
+void FormulinhaClass::Sumo()
+{
+  Forward(70, 100);
+  AvoidLine();
+  AttackObject(30);
 }
 
 FormulinhaClass Formulinha;
