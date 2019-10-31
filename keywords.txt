@@ -1,21 +1,67 @@
 #######################################
-# Syntax Coloring Map For SimpleExpressions
+# Syntax Coloring Map For Formulinha
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-CuteBuzzerSounds	KEYWORD1
+Formulinha	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-init        KEYWORD2
-bendTones	KEYWORD2
-playSound	KEYWORD2
-_tone	KEYWORD2
-bendTones	KEYWORD2
+   Start KEYWORD2
+   WhiteLine KEYWORD2
+   BlackLine KEYWORD2
+   UseServo KEYWORD2
+   RemoveServo KEYWORD2
+   Sound KEYWORD2
+   UpdateLineSensors KEYWORD2
+   AverageLineSensors KEYWORD2
+   Forward KEYWORD2
+   Backward KEYWORD2
+   Left KEYWORD2
+   Right KEYWORD2
+   Light KEYWORD2
+   Distance KEYWORD2
+   Led KEYWORD2
+   ButtonA KEYWORD2
+   ButtonB KEYWORD2
+   Servo KEYWORD2
+   CalibrateLineSensors KEYWORD2
+   FollowLine KEYWORD2
+   AvoidLine KEYWORD2
+   PartyMode KEYWORD2
+   ScrollModes KEYWORD2
+   AvoidMovement KEYWORD2
+   AvoidObject KEYWORD2
+   AttackObject KEYWORD2
+   Sumo KEYWORD2
+   Iniciar KEYWORD2
+   LinhaBranca KEYWORD2
+   LinhaPreta KEYWORD2
+   UsarServo KEYWORD2
+   RemoverServo KEYWORD2
+   Som KEYWORD2
+   AtualizarSensorDeLinha KEYWORD2
+   MediaSensorDeLinha KEYWORD2
+   Frente KEYWORD2
+   Tras KEYWORD2
+   Esquerda KEYWORD2
+   Direita KEYWORD2
+   Luz KEYWORD2
+   Distancia KEYWORD2
+   BotaoA KEYWORD2
+   BotaoB KEYWORD2
+   CalibrarSensorDeLinha KEYWORD2
+   SeguirLinha KEYWORD2
+   EvitarLinha KEYWORD2
+   ModoFesta KEYWORD2
+   EscolherModo KEYWORD2
+   MovimentoDeFuga KEYWORD2
+   EvitarObjeto KEYWORD2
+   AtacarObjeto KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
