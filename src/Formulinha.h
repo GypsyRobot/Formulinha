@@ -6,7 +6,8 @@
 #define debug true
 
 #include <Servo.h>
-#include <CuteBuzzerSounds.h>
+#include "Arduino.h"
+#include "CuteBuzzerSounds.h"
 
 //############# PINOS #############
 #define PIN_BUT_A 8
@@ -97,6 +98,33 @@ public:
   void AvoidObject();
   bool AttackObject(unsigned int);
   void Sumo();
+
+
+
+  void Iniciar();
+  void LinhaBranca();
+  void LinhaPreta();
+  void UsarServo();
+  void RemoverServo();
+  void Som(unsigned short);
+  void AtualizarSensorDeLinha();
+  void MediaSensorDeLinha();
+  void Frente(unsigned short, unsigned short);
+  void Tras(unsigned short, unsigned short);
+  void Esquerda(unsigned short, unsigned short);
+  void Direita(unsigned short, unsigned short);
+  unsigned int Luz();
+  float Distancia();
+  bool BotaoA();
+  bool BotaoB();
+  void CalibrarSensorDeLinha();
+  void SeguirLinha();
+  void EvitarLinha();
+  void ModoFesta();
+  void EscolherModo();
+  void MovimentoDeFuga(bool);
+  void EvitarObjeto();
+  bool AtacarObjeto(unsigned int);
 
 private:
 };

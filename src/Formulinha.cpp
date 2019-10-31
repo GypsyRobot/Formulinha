@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "Formulinha.h"
 
 void FormulinhaClass::Start()
@@ -428,58 +427,58 @@ void FormulinhaClass::FollowLine()
   }
   else
   {
-  speedRight = (lineSensor[0] * weightB + lineSensor[1] * weightA) / (weightA + weightB);
-  speedLeft = (lineSensor[4] * weightB + lineSensor[3] * weightA) / (weightA + weightB);
+    speedRight = (lineSensor[0] * weightB + lineSensor[1] * weightA) / (weightA + weightB);
+    speedLeft = (lineSensor[4] * weightB + lineSensor[3] * weightA) / (weightA + weightB);
 
-  unsigned short leftPercentage = map(speedLeft * 3 / 2, lineSensorMin[0], lineSensorMax[0], 0, 100);
-  unsigned short rightPercentage = map(speedRight * 3 / 2, lineSensorMin[4], lineSensorMax[4], 0, 100);
+    unsigned short leftPercentage = map(speedLeft * 3 / 2, lineSensorMin[0], lineSensorMax[0], 0, 100);
+    unsigned short rightPercentage = map(speedRight * 3 / 2, lineSensorMin[4], lineSensorMax[4], 0, 100);
 
-  // Serial.print(Formulinha.lineSensor[0]);
-  // Serial.print("\t");
-  // Serial.print(Formulinha.lineSensor[1]);
-  // Serial.print("\t");
-  // Serial.print(Formulinha.lineSensor[2]);
-  // Serial.print("\t");
-  // Serial.print(Formulinha.lineSensor[3]);
-  // Serial.print("\t");
-  // Serial.print(Formulinha.lineSensor[4]);
-  // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[0]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[1]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[2]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[3]);
+    // Serial.print("\t");
+    // Serial.print(Formulinha.lineSensor[4]);
+    // Serial.print("\t");
 
-  // Serial.print(leftPercentage);
-  // Serial.print(" Speed Left\t");
-  // Serial.print(rightPercentage);
-  // Serial.print(" Speed Right\n");
+    // Serial.print(leftPercentage);
+    // Serial.print(" Speed Left\t");
+    // Serial.print(rightPercentage);
+    // Serial.print(" Speed Right\n");
 
-  if (leftPercentage < 20 && rightPercentage < 20)
-  {
-
-    if (leftPercentage > rightPercentage)
+    if (leftPercentage < 20 && rightPercentage < 20)
     {
-      Forward(leftPercentage * 10, rightPercentage);
-    }
-    else if (leftPercentage < rightPercentage)
-    {
-      Forward(leftPercentage, rightPercentage * 10);
+
+      if (leftPercentage > rightPercentage)
+      {
+        Forward(leftPercentage * 10, rightPercentage);
+      }
+      else if (leftPercentage < rightPercentage)
+      {
+        Forward(leftPercentage, rightPercentage * 10);
+      }
+      else
+      {
+        Forward(leftPercentage * 15, rightPercentage * 5);
+      }
+
+      //forward(0, 0); //se só encontrar branco ele para
+      if (lineLost == false)
+      {
+        Sound(S_DISCONNECTION);
+        Led(255, 0, 0);
+        lineLost = true;
+      }
     }
     else
     {
-      Forward(leftPercentage * 15, rightPercentage * 5);
+      Forward(leftPercentage, rightPercentage);
+      Led(0, 0, 255);
+      lineLost = false;
     }
-
-    //forward(0, 0); //se só encontrar branco ele para
-    if (lineLost == false)
-    {
-      Sound(S_DISCONNECTION);
-      Led(255, 0, 0);
-      lineLost = true;
-    }
-  }
-  else
-  {
-    Forward(leftPercentage, rightPercentage);
-    Led(0, 0, 255);
-    lineLost = false;
-  }
   }
 }
 
@@ -707,5 +706,30 @@ void FormulinhaClass::Sumo()
   }
   AvoidLine();
 }
+
+void FormulinhaClass::Iniciar() { Start(); }
+void FormulinhaClass::LinhaBranca() { WhiteLine(); }
+void FormulinhaClass::LinhaPreta() { BlackLine(); }
+void FormulinhaClass::UsarServo() { UseServo(); }
+void FormulinhaClass::RemoverServo() { RemoveServo(); }
+void FormulinhaClass::Som(unsigned short arg) { Sound(arg); }
+void FormulinhaClass::AtualizarSensorDeLinha() { UpdateLineSensors(); }
+void FormulinhaClass::MediaSensorDeLinha() { AverageLineSensors(); }
+void FormulinhaClass::Frente(unsigned short argA, unsigned short argB) { Forward(argA, argB); }
+void FormulinhaClass::Tras(unsigned short argA, unsigned short argB) { Backward(argA, argB); }
+void FormulinhaClass::Esquerda(unsigned short argA, unsigned short argB) { Left(argA, argB); }
+void FormulinhaClass::Direita(unsigned short argA, unsigned short argB) { Right(argA, argB); }
+unsigned int FormulinhaClass::Luz() { Light(); }
+float FormulinhaClass::Distancia() { Distance(); }
+bool FormulinhaClass::BotaoA() { ButtonA(); }
+bool FormulinhaClass::BotaoB() { ButtonB(); }
+void FormulinhaClass::CalibrarSensorDeLinha() { CalibrateLineSensors(); }
+void FormulinhaClass::SeguirLinha() { FollowLine(); }
+void FormulinhaClass::EvitarLinha() { AvoidLine(); }
+void FormulinhaClass::ModoFesta() { PartyMode(); }
+void FormulinhaClass::EscolherModo() { ScrollModes(); }
+void FormulinhaClass::MovimentoDeFuga(bool arg) { AvoidMovement(arg); }
+void FormulinhaClass::EvitarObjeto() { AvoidObject(); }
+bool FormulinhaClass::AtacarObjeto(unsigned int arg) { AttackObject(arg); }
 
 FormulinhaClass Formulinha;
