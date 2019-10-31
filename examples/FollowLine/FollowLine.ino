@@ -2,16 +2,18 @@
 
 void setup()
 {
-  Formulinha.Init();
+  Formulinha.Start();
   //Formulinha.useServo();
   //delay(2000); //delay pra dar tempo de por ele no chão
   //Formulinha.calibrateLineSensors(false);
+  delay(2000);
+  Formulinha.CalibrateLineSensors(false);
 }
 void loop()
 {
   //Formulinha.followLine(1, 2);
   //Formulinha.avoidLine();
-  Formulinha.ScrollModes();
+  Formulinha.Sumo();
 
   // digitalWrite(PIN_GREEN, HIGH);
   // delay(1000);

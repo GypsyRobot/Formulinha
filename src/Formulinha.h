@@ -61,7 +61,7 @@ public:
   bool avoidSide = false;
   bool genericFlag = false;
 
-  void Init();
+  void Start();
   void UseServo();
   void RemoveServo();
   void Sound(unsigned short);
@@ -91,7 +91,7 @@ public:
 
   void AvoidMovement(bool);
   void AvoidObject();
-  void AttackObject(unsigned int);
+  bool AttackObject(unsigned int);
   void Sumo();
 
 private:

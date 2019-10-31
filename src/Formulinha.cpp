@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "Formulinha.h"
 
-void FormulinhaClass::Init()
+void FormulinhaClass::Start()
 {
   pinMode(PIN_BUT_A, INPUT);
   pinMode(PIN_BUT_B, INPUT);
@@ -189,21 +189,36 @@ unsigned int FormulinhaClass::Light()
 
 float FormulinhaClass::Distance()
 {
-  digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
-  delayMicroseconds(2);
-  digitalWrite(PIN_ULTRASONIC_TRIGGER, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
+  unsigned short numberOfSamples = 10;
+  float distanceSamples[numberOfSamples];
+  float averageDistance = 0;
 
-  unsigned long durationMicroSeconds = pulseIn(PIN_ULTRASONIC_ECHO, HIGH);
-  float distanceCm = durationMicroSeconds / 2.0 * 0.0343;
-  if (distanceCm > 400 || distanceCm <= 0)
+  for (unsigned short i = 0; i < numberOfSamples; i++)
   {
-    return -1.0;
+    digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
+    delayMicroseconds(2);
+    digitalWrite(PIN_ULTRASONIC_TRIGGER, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(PIN_ULTRASONIC_TRIGGER, LOW);
+
+    unsigned long durationMicroSeconds = pulseIn(PIN_ULTRASONIC_ECHO, HIGH);
+    float distanceCm = durationMicroSeconds / 2.0 * 0.0343;
+    distanceSamples[i] = distanceCm;
+    averageDistance += distanceSamples[i];
+  }
+  averageDistance = averageDistance / numberOfSamples;
+
+  if (averageDistance <= 1)
+  {
+    return -1;
+  }
+  else if (averageDistance > 400)
+  {
+    return 999;
   }
   else
   {
-    return distanceCm;
+    return averageDistance;
   }
 }
 
@@ -348,16 +363,16 @@ void FormulinhaClass::CalibrateLineSensors(bool automatic)
     lineSensorSamples[3][i] = lineSensorMed[3];
     lineSensorSamples[4][i] = lineSensorMed[4];
 
-    Serial.print(lineSensorSamples[0][i]);
-    Serial.print("\t");
-    Serial.print(lineSensorSamples[1][i]);
-    Serial.print("\t");
-    Serial.print(lineSensorSamples[2][i]);
-    Serial.print("\t");
-    Serial.print(lineSensorSamples[3][i]);
-    Serial.print("\t");
-    Serial.print(lineSensorSamples[4][i]);
-    Serial.print("\n");
+    // Serial.print(lineSensorSamples[0][i]);
+    // Serial.print("\t");
+    // Serial.print(lineSensorSamples[1][i]);
+    // Serial.print("\t");
+    // Serial.print(lineSensorSamples[2][i]);
+    // Serial.print("\t");
+    // Serial.print(lineSensorSamples[3][i]);
+    // Serial.print("\t");
+    // Serial.print(lineSensorSamples[4][i]);
+    // Serial.print("\n");
 
     delay(CALIBRATE_READING_DELAY);
   }
@@ -460,7 +475,7 @@ void FormulinhaClass::AvoidMovement(bool activate)
   }
   else
   {
-    Led(0, 0, 100);
+    //Led(0, 0, 100);
     //Forward(100, 100);
   }
 }
@@ -625,19 +640,37 @@ void FormulinhaClass::AvoidObject()
   }
 }
 
-void FormulinhaClass::AttackObject(unsigned int distance)
+bool FormulinhaClass::AttackObject(unsigned int distance)
 {
-  if (Distance() < distance)
+  float currentDistance = Distance();
+  // Serial.println(currentDistance);
+
+  if (currentDistance < distance && currentDistance != -1)
   {
     Forward(100, 100);
+    //Sound(S_OHOOH);
+    //delay(200);
+    return true;
+  }
+  else
+  {
+    return false;
   }
 }
 
 void FormulinhaClass::Sumo()
 {
-  Forward(70, 100);
+  if (AttackObject(70) == true)
+  {
+    Led(100, 100, 100);
+  }
+  else
+  {
+    Forward(100, 100);
+    Right(100, 100);
+    Led(100, 0, 100);
+  }
   AvoidLine();
-  AttackObject(30);
 }
 
 FormulinhaClass Formulinha;
