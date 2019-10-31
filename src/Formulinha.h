@@ -57,11 +57,15 @@ public:
 
   unsigned short currentMode = 0;
 
+  bool whiteLine = false;
+
   bool lineLost = false;
   bool avoidSide = false;
   bool genericFlag = false;
 
   void Start();
+  void WhiteLine();
+  void BlackLine();
   void UseServo();
   void RemoveServo();
   void Sound(unsigned short);
@@ -80,9 +84,9 @@ public:
 
   void Servo(unsigned short);
 
-  void CalibrateLineSensors(bool);
+  void CalibrateLineSensors();
 
-  void FollowLine(unsigned short, unsigned short);
+  void FollowLine();
   void AvoidLine();
 
   void PartyMode();

@@ -35,6 +35,16 @@ void FormulinhaClass::Start()
 
   delay(1000); //espera um segundo quando inicia tudo para estabilizar
 }
+
+void FormulinhaClass::WhiteLine()
+{
+  whiteLine = true;
+}
+
+void FormulinhaClass::BlackLine()
+{
+  whiteLine = false;
+}
 void FormulinhaClass::UseServo()
 {
   myServo.attach(PIN_SERVO);
@@ -51,11 +61,22 @@ void FormulinhaClass::Sound(unsigned short soundIndex)
 
 void FormulinhaClass::UpdateLineSensors()
 {
-  lineSensor[0] = analogRead(PIN_LINE_0);
-  lineSensor[1] = analogRead(PIN_LINE_1);
-  lineSensor[2] = analogRead(PIN_LINE_2);
-  lineSensor[3] = analogRead(PIN_LINE_3);
-  lineSensor[4] = analogRead(PIN_LINE_4);
+  if (whiteLine == false)
+  {
+    lineSensor[0] = analogRead(PIN_LINE_0);
+    lineSensor[1] = analogRead(PIN_LINE_1);
+    lineSensor[2] = analogRead(PIN_LINE_2);
+    lineSensor[3] = analogRead(PIN_LINE_3);
+    lineSensor[4] = analogRead(PIN_LINE_4);
+  }
+  else
+  {
+    lineSensor[0] = 1023 - analogRead(PIN_LINE_0);
+    lineSensor[1] = 1023 - analogRead(PIN_LINE_1);
+    lineSensor[2] = 1023 - analogRead(PIN_LINE_2);
+    lineSensor[3] = 1023 - analogRead(PIN_LINE_3);
+    lineSensor[4] = 1023 - analogRead(PIN_LINE_4);
+  }
 }
 
 void FormulinhaClass::AverageLineSensors()
@@ -78,12 +99,22 @@ void FormulinhaClass::AverageLineSensors()
 
   for (unsigned short i = 0; i < SAMPLES_PER_AVERAGE; i++)
   {
-    lineSensorMovingAverageSamples[0][i] = analogRead(PIN_LINE_0);
-    lineSensorMovingAverageSamples[1][i] = analogRead(PIN_LINE_1);
-    lineSensorMovingAverageSamples[2][i] = analogRead(PIN_LINE_2);
-    lineSensorMovingAverageSamples[3][i] = analogRead(PIN_LINE_3);
-    lineSensorMovingAverageSamples[4][i] = analogRead(PIN_LINE_4);
-
+    if (whiteLine == false)
+    {
+      lineSensorMovingAverageSamples[0][i] = analogRead(PIN_LINE_0);
+      lineSensorMovingAverageSamples[1][i] = analogRead(PIN_LINE_1);
+      lineSensorMovingAverageSamples[2][i] = analogRead(PIN_LINE_2);
+      lineSensorMovingAverageSamples[3][i] = analogRead(PIN_LINE_3);
+      lineSensorMovingAverageSamples[4][i] = analogRead(PIN_LINE_4);
+    }
+    else
+    {
+      lineSensorMovingAverageSamples[0][i] = 1023 - analogRead(PIN_LINE_0);
+      lineSensorMovingAverageSamples[1][i] = 1023 - analogRead(PIN_LINE_1);
+      lineSensorMovingAverageSamples[2][i] = 1023 - analogRead(PIN_LINE_2);
+      lineSensorMovingAverageSamples[3][i] = 1023 - analogRead(PIN_LINE_3);
+      lineSensorMovingAverageSamples[4][i] = 1023 - analogRead(PIN_LINE_4);
+    }
     lineSensorMovingAverage[0] += lineSensorMovingAverageSamples[0][i];
     lineSensorMovingAverage[1] += lineSensorMovingAverageSamples[1][i];
     lineSensorMovingAverage[2] += lineSensorMovingAverageSamples[2][i];
@@ -283,8 +314,10 @@ void FormulinhaClass::Servo(unsigned short angle)
   delay(30); //30ms pra garantir que não estrague o servo por excesso de movimentos
 }
 
-void FormulinhaClass::CalibrateLineSensors(bool automatic)
+void FormulinhaClass::CalibrateLineSensors()
 {
+  bool automatic = false;
+
   bool sideTurning = 0;
   unsigned short sideTurningCounter = 0;
 
@@ -363,16 +396,16 @@ void FormulinhaClass::CalibrateLineSensors(bool automatic)
     lineSensorSamples[3][i] = lineSensorMed[3];
     lineSensorSamples[4][i] = lineSensorMed[4];
 
-    // Serial.print(lineSensorSamples[0][i]);
-    // Serial.print("\t");
-    // Serial.print(lineSensorSamples[1][i]);
-    // Serial.print("\t");
-    // Serial.print(lineSensorSamples[2][i]);
-    // Serial.print("\t");
-    // Serial.print(lineSensorSamples[3][i]);
-    // Serial.print("\t");
-    // Serial.print(lineSensorSamples[4][i]);
-    // Serial.print("\n");
+    Serial.print(lineSensorSamples[0][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[1][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[2][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[3][i]);
+    Serial.print("\t");
+    Serial.print(lineSensorSamples[4][i]);
+    Serial.print("\n");
 
     delay(CALIBRATE_READING_DELAY);
   }
@@ -383,8 +416,10 @@ void FormulinhaClass::CalibrateLineSensors(bool automatic)
   Led(0, 0, 0);
 }
 
-void FormulinhaClass::FollowLine(unsigned short weightA, unsigned short weightB)
+void FormulinhaClass::FollowLine()
 {
+  unsigned short weightA = 1;
+  unsigned short weightB = 2;
   UpdateLineSensors();
 
   if (lineSensor[2] > lineSensorMed[2])
@@ -393,58 +428,58 @@ void FormulinhaClass::FollowLine(unsigned short weightA, unsigned short weightB)
   }
   else
   {
-    speedRight = (lineSensor[0] * weightB + lineSensor[1] * weightA) / (weightA + weightB);
-    speedLeft = (lineSensor[4] * weightB + lineSensor[3] * weightA) / (weightA + weightB);
+  speedRight = (lineSensor[0] * weightB + lineSensor[1] * weightA) / (weightA + weightB);
+  speedLeft = (lineSensor[4] * weightB + lineSensor[3] * weightA) / (weightA + weightB);
 
-    unsigned short leftPercentage = map(speedLeft * 3 / 2, lineSensorMin[0], lineSensorMax[0], 0, 100);
-    unsigned short rightPercentage = map(speedRight * 3 / 2, lineSensorMin[4], lineSensorMax[4], 0, 100);
+  unsigned short leftPercentage = map(speedLeft * 3 / 2, lineSensorMin[0], lineSensorMax[0], 0, 100);
+  unsigned short rightPercentage = map(speedRight * 3 / 2, lineSensorMin[4], lineSensorMax[4], 0, 100);
 
-    // Serial.print(Formulinha.lineSensor[0]);
-    // Serial.print("\t");
-    // Serial.print(Formulinha.lineSensor[1]);
-    // Serial.print("\t");
-    // Serial.print(Formulinha.lineSensor[2]);
-    // Serial.print("\t");
-    // Serial.print(Formulinha.lineSensor[3]);
-    // Serial.print("\t");
-    // Serial.print(Formulinha.lineSensor[4]);
-    // Serial.print("\t");
+  // Serial.print(Formulinha.lineSensor[0]);
+  // Serial.print("\t");
+  // Serial.print(Formulinha.lineSensor[1]);
+  // Serial.print("\t");
+  // Serial.print(Formulinha.lineSensor[2]);
+  // Serial.print("\t");
+  // Serial.print(Formulinha.lineSensor[3]);
+  // Serial.print("\t");
+  // Serial.print(Formulinha.lineSensor[4]);
+  // Serial.print("\t");
 
-    // Serial.print(leftPercentage);
-    // Serial.print(" Speed Left\t");
-    // Serial.print(rightPercentage);
-    // Serial.print(" Speed Right\n");
+  // Serial.print(leftPercentage);
+  // Serial.print(" Speed Left\t");
+  // Serial.print(rightPercentage);
+  // Serial.print(" Speed Right\n");
 
-    if (leftPercentage < 20 && rightPercentage < 20)
+  if (leftPercentage < 20 && rightPercentage < 20)
+  {
+
+    if (leftPercentage > rightPercentage)
     {
-
-      if (leftPercentage > rightPercentage)
-      {
-        Forward(leftPercentage * 10, rightPercentage);
-      }
-      else if (leftPercentage < rightPercentage)
-      {
-        Forward(leftPercentage, rightPercentage * 10);
-      }
-      else
-      {
-        Forward(leftPercentage * 15, rightPercentage * 5);
-      }
-
-      //forward(0, 0); //se só encontrar branco ele para
-      if (lineLost == false)
-      {
-        Sound(S_DISCONNECTION);
-        Led(255, 0, 0);
-        lineLost = true;
-      }
+      Forward(leftPercentage * 10, rightPercentage);
+    }
+    else if (leftPercentage < rightPercentage)
+    {
+      Forward(leftPercentage, rightPercentage * 10);
     }
     else
     {
-      Forward(leftPercentage, rightPercentage);
-      Led(0, 0, 255);
-      lineLost = false;
+      Forward(leftPercentage * 15, rightPercentage * 5);
     }
+
+    //forward(0, 0); //se só encontrar branco ele para
+    if (lineLost == false)
+    {
+      Sound(S_DISCONNECTION);
+      Led(255, 0, 0);
+      lineLost = true;
+    }
+  }
+  else
+  {
+    Forward(leftPercentage, rightPercentage);
+    Led(0, 0, 255);
+    lineLost = false;
+  }
   }
 }
 
@@ -608,7 +643,7 @@ void FormulinhaClass::ScrollModes()
     delay(500);
     if (genericFlag == false)
     {
-      CalibrateLineSensors(false);
+      CalibrateLineSensors();
     }
     break;
   case 1:
@@ -622,7 +657,7 @@ void FormulinhaClass::ScrollModes()
     break;
   case 3:
     Led(0, 0, 255);
-    FollowLine(1, 2);
+    FollowLine();
     genericFlag = false;
     break;
   }
